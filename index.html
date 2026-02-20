@@ -1,10 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dashboard Perpustakaan</title>
+  <title>Pengajuan Kunjungan Perpustakaan</title>
+  <style>
+    body { font-family: Arial; padding: 40px; }
+    input, button { padding: 10px; margin: 5px 0; width: 100%; }
+  </style>
 </head>
 <body>
-  <h1>Dashboard Perpustakaan Sumedang</h1>
-  <p>Deploy pertama berhasil 🚀</p>
+
+<h2>Form Pengajuan Kunjungan</h2>
+
+<form id="formKunjungan">
+  <input type="text" placeholder="Nama Sekolah" id="sekolah" required />
+  <input type="number" placeholder="Jumlah Siswa" id="jumlah" required />
+  <input type="date" id="tanggal" required />
+  <input type="text" placeholder="Nama Penanggung Jawab" id="penanggung" required />
+  <input type="text" placeholder="No HP" id="hp" required />
+  <button type="submit">Kirim Pengajuan</button>
+</form>
+
+<p id="hasil"></p>
+
+<script>
+document.getElementById("formKunjungan").addEventListener("submit", async function(e){
+  e.preventDefault();
+
+  const data = {
+    sekolah: document.getElementById("sekolah").value,
+    jumlah: document.getElementById("jumlah").value,
+    tanggal: document.getElementById("tanggal").value,
+    penanggung: document.getElementById("penanggung").value,
+    hp: document.getElementById("hp").value
+  };
+
+  const response = await fetch("/.netlify/functions/pengajuan", {
+    method: "POST",
+    body: JSON.stringify(data)
+  });
+
+  const result = await response.json();
+  document.getElementById("hasil").innerText = result.message;
+});
+</script>
+
 </body>
 </html>
